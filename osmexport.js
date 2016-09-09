@@ -13,7 +13,7 @@ var handler = new osmium.Handler();
 var ways = 0;
 
 handler.on('way', function (way) {
-  if ( way.tags('highway') ) ways++;
+  if ( way.tags('highway') && way.tags().highway === 'primary') ways++;
 });
 
 
@@ -49,7 +49,7 @@ handler.on('way', function (way) {
       var wayfeature = {
         type: 'Feature',
         geometry: way.geojson(),
-        properties: { name: way.tags().highway }
+        properties: { class: way.tags().highway }
       };
       featureout.write(wayfeature);
       bar.tick();
