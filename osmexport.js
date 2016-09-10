@@ -4,7 +4,7 @@ var gjstream = require('geojson-stream');
 var ProgressBar = require('progress');
 var through = require('through');
 
-var reader = new osmium.Reader('dc.pbf');
+var reader = new osmium.Reader('north-america-latest.osm.pbf');
 var handler = new osmium.Handler();
 
 
@@ -21,7 +21,7 @@ osmium.apply(reader, handler);
 
 // SECOND PASS - PROCESS WAYS
 
-var fileout = fs.createWriteStream('sample-extract.geojson');
+var fileout = fs.createWriteStream('us-roads.geojson');
 var featureout = gjstream.stringify();
 
 var bar = new ProgressBar(' processing [:bar] :percent :etas', {
@@ -60,7 +60,7 @@ handler.on('way', function (way) {
   }
 });
 
-var reader = new osmium.Reader('dc.pbf');
+var reader = new osmium.Reader('north-america-latest.osm.pbf');
 var locationhandler = new osmium.LocationHandler();
 osmium.apply(reader, locationhandler, handler);
 featureout.end();
