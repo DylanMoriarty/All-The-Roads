@@ -4,7 +4,7 @@ var gjstream = require('geojson-stream');
 var ProgressBar = require('progress');
 var through = require('through');
 
-var reader = new osmium.Reader('north-america-latest.osm.pbf');
+var reader = new osmium.Reader('california-latest.osm.pbf');
 var handler = new osmium.Handler();
 
 
@@ -60,7 +60,7 @@ handler.on('way', function (way) {
   }
 });
 
-var reader = new osmium.Reader('north-america-latest.osm.pbf');
+var reader = new osmium.Reader('california-latest.osm.pbf');
 var locationhandler = new osmium.LocationHandler();
 osmium.apply(reader, locationhandler, handler);
 featureout.end();
