@@ -4,24 +4,22 @@ var gjstream = require('geojson-stream');
 var ProgressBar = require('progress');
 var through = require('through');
 
-var reader = new osmium.Reader('us-midwest-latest.osm.pbf');
+var reader = new osmium.Reader('us-northeast-latest.osm.pbf');
 var handler = new osmium.Handler();
-
 
 // FIRST PASS - COUNT THE WAYS
 
 var ways = 0;
 
 handler.on('way', function (way) {
-  if ( way.tags('highway') && way.tags().highway === 'primary') ways++;
+  if ( way.tags('highway')) ways++;
 });
-
 
 osmium.apply(reader, handler);
 
 // SECOND PASS - PROCESS WAYS
 
-var fileout = fs.createWriteStream('us-midwest-roads.geojson');
+var fileout = fs.createWriteStream('us-northeast-roads.geojson');
 var featureout = gjstream.stringify();
 
 var bar = new ProgressBar(' processing [:bar] :percent :etas', {
@@ -45,7 +43,7 @@ featureout.pipe(through(function (data) {
 
 handler.on('way', function (way) {
   try {  
-    if (way.tags('highway')) {
+    if (way.tags().highway === 'primary' || way.tags().highway === 'secondary' || way.tags().highway === 'tertiary' || way.tags().highway === 'trunk' || way.tags().highway === 'motorway' || way.tags().highway === 'motorway_link' || way.tags().highway === 'trunk_link' || way.tags().highway === 'primary_link' || way.tags().highway === 'primary_link' || way.tags().highway === 'secondary_link' || way.tags().highway === 'tertiary_link') {
       var wayfeature = {
         type: 'Feature',
         geometry: way.geojson(),
@@ -60,7 +58,7 @@ handler.on('way', function (way) {
   }
 });
 
-var reader = new osmium.Reader('us-midwest-latest.osm.pbf');
+var reader = new osmium.Reader('us-northeast-latest.osm.pbf');
 var locationhandler = new osmium.LocationHandler();
 osmium.apply(reader, locationhandler, handler);
 featureout.end();
